@@ -1,0 +1,138 @@
+﻿<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Intro to MapView - Create a 2D map - 4.15</title>
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 95%;
+            width: 100%;
+            float: left;
+        }
+    </style>
+
+    <link rel="stylesheet"
+          href="https://js.arcgis.com/4.15/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.15/"></script>
+
+    <script>
+             < !DOCTYPE html >
+                <html>
+                    <head>
+                        <meta charset="utf-8" />
+                        <meta
+                            name="viewport"
+                            content="initial-scale=1,maximum-scale=1,user-scalable=no"
+                        />
+                        <title>Intro to MapView - Create a 2D map - 4.15</title>
+                        <style>
+                            html,
+                            body,
+              #viewDiv {
+                                padding: 0;
+                margin: 0;
+                height: 100%;
+                width: 100%;
+
+              }
+            </style>
+
+                        <link
+                            rel="stylesheet"
+                            href="https://js.arcgis.com/4.15/esri/themes/light/main.css"
+                        />
+                        <script src="https://js.arcgis.com/4.15/"></script>
+
+    <script>
+
+                            require(["esri/Map", "esri/views/MapView","esri/layers/FeatureLayer","esri/widgets/Legend","esri/widgets/ScaleBar"], function(map, MV,fl,legend,scalebar) {
+                 var flayer1 = new fl({url:"http://www.arcgisonline.cn/server/rest/services/Hosted/%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%9C%81%E4%BC%9A%E5%9F%8E%E5%B8%82%E6%88%BF%E4%BB%B7%E5%8A%A8%E6%80%81/FeatureServer"});
+                var map1 = new map({
+                                basemap: "streets-night-vector"});
+                 map1.layers.add(flayer1);
+                var view = new MV({
+                                container: "viewDiv",
+                  map: map1,
+                  zoom: 3,
+                  center: [120, 21] // longitude, latitude
+                });
+
+                var scaleBar = new scalebar({
+                                view: view,
+            style: "ruler",
+            unit: "metric"
+
+});
+// Add widget to the bottom left corner of the view
+view.ui.add(scaleBar, {
+                                position: "bottom-left"
+
+});
+
+                var legend1 = new legend({
+                                view: view,
+                  layerInfos: [{
+                                layer: flayer1,
+                  title: "房价动态变化情况",
+                }]
+                });
+
+              view.ui.add(legend1, "bottom-right");
+
+               var coordsWidget = document.createElement("div");
+              coordsWidget.id = "coordsWidget";
+              coordsWidget.className = "esri-widget esri-component";
+              coordsWidget.style.padding = "7px 15px 5px";
+
+              view.ui.add(coordsWidget, "bottom-right");
+
+              function showCoordinates(pt) {
+                var coords = "Lat/Lon " + pt.latitude.toFixed(3) + " " + pt.longitude.toFixed(3) +
+                    " | Scale 1:" + Math.round(view.scale * 1) / 1 +
+                    " | Zoom " + view.zoom;
+                coordsWidget.innerHTML = coords;
+              }
+                  view.watch("stationary", function(isStationary) {
+                                showCoordinates(view.center);
+              });
+
+              view.on("pointer-move", function(evt) {
+                                showCoordinates(view.toMap({ x: evt.x, y: evt.y }));
+              });
+              });
+    </script>
+</head>
+<body>
+    <style>
+        #viewDiv1 {
+            background: url(http://cdn.wanweifabu.cn/xinyunpic/12498/157363068518640.jpg);
+            background-repeat: repeat-x;
+            width: 100%;
+            height: 9%;
+            float: left;
+        }
+    </style>
+    <style>
+        #viewDiv2 {
+            background-image: url(http://cdn.wanweifabu.cn/xinyunpic/12498/157363068518640.jpg);
+            background-repeat: repeat-x;
+            width: 100%;
+            height: 8%;
+            float: left;
+        }
+    </style>
+    
+    </style>
+    <div id="viewDiv1" style="color:dimgrey;font-size:x-large;font-family:'Microsoft Sans Serif';font-weight:bold"><img src="https://p5.ssl.qhimgs1.com/sdr/400__/t01fcd81c0fadc5b835.gif" width="50" height="35" />中国大陆各省会城市房价动态情况</div>
+    <div id="viewDiv"></div>
+    <div id="viewDiv2" style="color:dimgrey;font-size:large;font-family:'Microsoft Sans Serif'">
+        <a href="http://data.stats.gov.cn/easyquery.htm?cn=E0105" class="button">各地区房价详情数据</a>
+    </div>
+    </div>
+
+</body>
+</html>
